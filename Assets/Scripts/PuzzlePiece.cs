@@ -43,11 +43,13 @@ public class PuzzlePiece : MonoBehaviour, IDragHandler, IEndDragHandler
         if (Vector3.Distance(_rectTransform.position, _correctPosition) < 20f) // Snap range
         {
             AudioManager.OnPlayAudio?.Invoke(SoundType.DropCorrect);
+            TriggerHapticFeedback(true);
             MarkAsCorrectlyPlaced();
             OnPiecePlacedCorrectly?.Invoke();
         }
         else
         {
+            TriggerHapticFeedback(false);
             StartCoroutine(ShakePiece());
             AudioManager.OnPlayAudio?.Invoke(SoundType.DropIncorrect);
             ShowOutline(true);
@@ -106,5 +108,37 @@ public class PuzzlePiece : MonoBehaviour, IDragHandler, IEndDragHandler
         }
 
         _rectTransform.position = originalPosition;
+    }
+    
+    /// <summary>
+    /// Triggers haptic feedback for correct (short) or incorrect (longer) placements.
+    /// </summary>
+    private void TriggerHapticFeedback(bool isCorrect)
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            try
+            {
+                using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                {
+                    using (AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
+                    {
+                        using (AndroidJavaObject vibrator = currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator"))
+                        {
+                            if (vibrator.Call<bool>("hasVibrator"))
+                            {
+                                long vibrationDuration = isCorrect ? 50 : 150; // Short vibration for correct, longer for wrong
+                                vibrator.Call("vibrate", vibrationDuration);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("Vibration failed: " + e.Message);
+            }
+#elif UNITY_IOS
+            Handheld.Vibrate(); // iOS only supports basic vibration
+#endif
     }
 }
