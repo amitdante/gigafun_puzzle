@@ -1,0 +1,56 @@
+# ===============
+# Unity generated
+# ===============
+
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+
+# Avoid uploading auto-generated Visual Studio/JetBrains Rider files
+.vs/
+*.sln
+*.csproj
+*.pidb
+*.userprefs
+*.unityproj
+*.suo
+*.tmp
+*.svd
+*.pdb
+*.opendb
+*.VC.db
+
+# ===============
+# Unity specific
+# ===============
+
+# Exclude crash reports and logs
+sysinfo.txt
+
+
+
+# Exclude files created by Unity Editor settings
+/[Uu]ser[Ss]ettings/
+
+# ===============
+# OS specific
+# ===============
+
+# Windows
+[Tt]humbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.nfs*
+Assets/ThirdParty/LowPolyFantasyBundle/LowPolyFantasyVillage2/CartoonMedievalTown_2020.3_SRP_1.03.unitypackage
